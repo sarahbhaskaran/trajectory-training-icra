@@ -166,3 +166,16 @@ class FSWrappedRLVehicle(Vehicle):
 
     def set_vdes(self, vdes):
         self.fs.v_des = vdes
+
+
+# PAIRED
+class AdversarialVehicle(Vehicle):
+    def __init__(self, **kwargs):
+        # Maybe leave it so it'll have the required attributes
+        super().__init__(**kwargs)
+
+        # This one should generate all the steps beforehand...? or actually env_step
+
+
+    def step(self):
+        return s

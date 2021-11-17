@@ -1,4 +1,4 @@
-name: trajectory
+name: trajectory-icra
 channels:
   - defaults
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
     - cloudpickle==1.6.0
     - gym==0.18.3
     - matplotlib==3.4.2
-    - numpy==1.20.3
+    - numpy==1.19.2
     - pandas==1.2.4
     - pygame==2.0.1
     - stable-baselines3==1.0

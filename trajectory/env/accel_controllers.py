@@ -62,7 +62,9 @@ class TimeHeadwayFollowerStopper(object):
     def __init__(self,
                  v_des=15,
                  max_accel=1.5,
-                 max_deaccel=3.0):
+                 max_deaccel=3.0,
+                 v0=None,
+                 noise=None):
 
         # other parameters
         self.h_1 = 0.4

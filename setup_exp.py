@@ -33,14 +33,14 @@ def run_experiment(config):
         'num_concat_states': config['env_num_concat_states'],
         'num_steps_per_sim': config['env_num_steps_per_sim'],
         'platoon': config['env_platoon'],
-        'human_kwargs': config['env_human_kwargs'],
+        'human_kwargs': config['env_human_kwargs']
     })
 
     # create env
     multi_env = make_vec_env(TrajectoryEnv, n_envs=config['n_envs'], env_kwargs=dict(config=env_config))
 
     # create callbacks
-    callbacks = []        
+    callbacks = []
     if not config['no_eval']:
         callbacks.append(TensorboardCallback(
             eval_freq=config['eval_frequency'],

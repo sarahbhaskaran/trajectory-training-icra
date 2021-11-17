@@ -159,22 +159,32 @@ class TrajectoryEnv(gym.Env):
 
     def create_simulation(self):
         # collect the next trajectory
-        if self.fixed_traj_path is not None and self.traj is None:
-            self.traj = next(
-                t for t in self.data_loader.trajectories
-                if str(t['path']).split("/")[-1]
-                == self.fixed_traj_path.split("/")[-1])
+        # PAIRED: Run adversarial vehicle model to get trajectory
+        if self.config['paired']:
+            # Set self.traj; must have attributes 'timestep' and 'size'
+            # TODO: figure out correct way to initialize. For now, it just needs to have a time step and size.
+            self.traj = {'timestep': .05, 'size': 10}
+        else:
+            if self.fixed_traj_path is not None and self.traj is None:
+                self.traj = next(
+                    t for t in self.data_loader.trajectories
+                    if str(t['path']).split("/")[-1]
+                    == self.fixed_traj_path.split("/")[-1])
 
-        if not self.fixed_traj_path:
-            self.traj = next(self.trajectories)
+            if not self.fixed_traj_path:
+                self.traj = next(self.trajectories)
 
         # create a simulation object
         self.time_step = self.traj['timestep']
         self.sim = Simulation(timestep=self.time_step)
 
         # populate simulation with a trajectoy leader
-        self.sim.add_vehicle(controller='trajectory', kind='leader',
-            trajectory=zip(self.traj['positions'], self.traj['velocities'], self.traj['accelerations']))
+        # PAIRED: Lead vehicle is the adversary
+        if self.config['paired']:
+            self.sim.add_vehicle(controller='adversarial')
+        else:
+            self.sim.add_vehicle(controller='trajectory', kind='leader',
+                trajectory=zip(self.traj['positions'], self.traj['velocities'], self.traj['accelerations']))
 
         # parse platoons
         if self.platoon in PLATOON_PRESETS:
@@ -308,12 +318,12 @@ class TrajectoryEnv(gym.Env):
 
     def gen_emissions(self, emissions_path='emissions', upload_to_leaderboard=True, additional_metadata={}):
         # create emissions dir if it doesn't exist
-        if emissions_path is None: 
+        if emissions_path is None:
             emissions_path = 'emissions'
         emissions_path = Path(emissions_path)
         if emissions_path.suffix == '.csv':
             dir_path = emissions_path.parent
-        else:                
+        else:
             now = datetime.now().strftime('%d%b%y_%Hh%Mm%Ss')
             dir_path = Path(emissions_path, now)
             emissions_path = dir_path / 'emissions.csv'
@@ -439,4 +449,3 @@ class TrajectoryEnv(gym.Env):
                 f'time_space_diagram/date={date_now}/partition_name={source_id}/{source_id}.png',
                 tsd_path, log=True
             )
-

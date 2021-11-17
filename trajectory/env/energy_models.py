@@ -19,4 +19,5 @@ class PFM2019RAV4(object):
         pass
 
     def get_instantaneous_fuel_consumption(self, accel, speed, grade):
+        return 0
         raise ValueError('The PFM2019RAV4 energy model is private at the time of publication.')
