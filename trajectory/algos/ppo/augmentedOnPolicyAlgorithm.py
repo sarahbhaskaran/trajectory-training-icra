@@ -89,6 +89,7 @@ class AugmentedOnPolicyAlgorithm(BaseAlgorithm):
             seed=seed,
             tensorboard_log=tensorboard_log,
             supported_action_spaces=supported_action_spaces,
+            monitor_wrapper=monitor_wrapper
         )
 
         self.n_steps = n_steps

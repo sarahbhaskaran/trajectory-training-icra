@@ -47,9 +47,9 @@ class TensorboardCallback(BaseCallback):
             self.log_rollout_dict('idm_eval', self.run_eval(av_controller='idm'))
             self.log_rollout_dict('fs_eval', self.run_eval(av_controller='fs'))
             self.log_rollout_dict('rl_eval', self.run_eval(av_controller='rl'))
-        
+
         self.rollout += 1
-    
+
     def log_rollout_dict(self, base_name, rollout_dict):
         plotter = TensorboardPlotter(self.logger)
         for group, metrics in rollout_dict.items():
@@ -87,7 +87,7 @@ class TensorboardCallback(BaseCallback):
             for info in collected_rollout['infos']:
                 for k, v in info['metrics'].items():
                     rollout_dict['custom_metrics'][k].append(v)
-        
+
         for base_state in collected_rollout['base_states']:
             for k, v in base_state.items():
                     rollout_dict['base_state'][k].append(v[0])
@@ -216,7 +216,7 @@ class LoggingCallback(BaseCallback):
         if self.log_metrics:
             self.logger.record('time/timesteps', self.num_timesteps)
             self.logger.record('time/iters', self.num_timesteps // timesteps_per_iter)
-                
+
         self.logger.record('time/goal_timesteps', total_timesteps_rounded)
         self.logger.record('time/goal_iters', total_iters)
         self.logger.record('time/training_progress', f'{round(100 * progress_fraction, 1)}%')
@@ -231,7 +231,7 @@ class LoggingCallback(BaseCallback):
         if len(self.ep_info_buffer) > 0 and len(self.ep_info_buffer[0]) > 0:
             self.logger.record("rollout/ep_rew_mean", np.mean([ep_info["r"] for ep_info in self.ep_info_buffer]))
             self.logger.record("rollout/ep_len_mean", np.mean([ep_info["l"] for ep_info in self.ep_info_buffer]))
-        
+
         if self.log_metrics:
             self.print_metrics()
 
@@ -258,7 +258,7 @@ class LoggingCallback(BaseCallback):
             else:
                 continue  # plt figure
 
-            if key.find('/') > 0: 
+            if key.find('/') > 0:
                 tag = key[: key.find('/') + 1]
                 key2str[tag] = ''
             if tag is not None and tag in key:
@@ -279,6 +279,7 @@ class LoggingCallback(BaseCallback):
         print('\n'.join(lines))
 
     def _on_step(self):
+        import pdb; pdb.set_trace()
         if (infos := self.locals['infos'][0].get('episode')) is not None:
             self.ep_info_buffer.extend([infos])
         return True

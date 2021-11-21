@@ -174,8 +174,17 @@ class AdversarialVehicle(Vehicle):
         # Maybe leave it so it'll have the required attributes
         super().__init__(**kwargs)
 
-        # This one should generate all the steps beforehand...? or actually env_step
+        self.t = 0
 
+        self.trajectory = []
+        self.trajectory_iter = None
+
+
+        # This one should generate all the steps beforehand...? or actually env_step
+    def reset(self):
+        self.trajectory_iter = iter(self.trajectory)
 
     def step(self):
-        return s
+        accel = next(self.trajectory_iter)
+        # TODO: ballistic?
+        return super().step(accel=accel, ballistic=True)

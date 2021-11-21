@@ -43,6 +43,8 @@ DEFAULT_ENV_CONFIG = {
     'human_kwargs': '{}',
     # set to use one specific trajectory
     'fixed_traj_path': None,
+    # PAIRED
+    'paired': False
 }
 
 # platoon presets that can be passed to the "platoon" env param

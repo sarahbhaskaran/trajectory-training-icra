@@ -87,6 +87,7 @@ class PPO(AugmentedOnPolicyAlgorithm):
         seed: Optional[int] = None,
         device: Union[th.device, str] = "auto",
         _init_setup_model: bool = True,
+        monitor_wrapper=True
     ):
 
         super(PPO, self).__init__(
@@ -114,6 +115,8 @@ class PPO(AugmentedOnPolicyAlgorithm):
                 spaces.MultiDiscrete,
                 spaces.MultiBinary,
             ),
+            # PLATOON: allow not wrapping the env in monitor class
+            monitor_wrapper=monitor_wrapper
         )
 
         # Sanity check, otherwise it will lead to noisy gradient and NaN
