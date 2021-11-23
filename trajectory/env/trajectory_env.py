@@ -305,6 +305,10 @@ class TrajectoryEnv(gym.Env):
             self.collected_rollout['rewards'].append(reward)
             self.collected_rollout['dones'].append(done)
             self.collected_rollout['infos'].append(infos)
+            print('collected rollout infos', self.collected_rollout['infos'])
+            import pdb; pdb.set_trace()
+
+        print(infos)
 
         return next_state, reward, done, infos
 
